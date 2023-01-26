@@ -1,26 +1,59 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import HomePage from "./../pages/HomePage.vue";
+import LoginPage from "./../Authentication/LoginPage.vue";
+import RegisterPage from "./../Authentication/RegisterPage.vue";
+import CreatePost from "./../pages/posts/CraetePost.vue";
+import EditPost from "./../pages/posts/EditPost.vue";
+import PostDetails from "./../pages/posts/PostDetails.vue";
 
 const routes = [
   {
     path: "/",
-    name: "home",
-    component: HomeView,
+    redirect: "/home",
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    path: "/home",
+    name: "home",
+    component: HomePage,
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: LoginPage,
+  },
+  {
+    path: "/register",
+    name: "register",
+    component: RegisterPage,
+  },
+  {
+    path: "/create-post",
+    name: "create-post",
+    meta: { requresAuth: true },
+    component: CreatePost,
+  },
+  {
+    path: "/edit-post",
+    name: "edit-post",
+    meta: { requresAuth: true },
+    component: EditPost,
+  },
+  {
+    path: "/post-details",
+    name: "post details",
+    component: PostDetails,
   },
 ];
-
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.requresAuth) {
+//     next("/login");
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;

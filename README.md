@@ -11,17 +11,22 @@ npm install
 ```
 npm run db
 
-### Compiles and hot-reloads for development
 ```
 
+### Start project
+
+```
 npm run serve
 
 ```
 
 ### Compiles and minifies for production
+
 ```
 
 yarn build
+
+```
 
 ```
 

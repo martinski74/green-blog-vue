@@ -6,6 +6,7 @@
         :isLoged="isAuthenticated"
         @onDelete="removePost(post.id)"
         @onEdit="editPost(post.id)"
+        @seeMore="showDetails"
       />
     </div>
   </div>
@@ -21,7 +22,6 @@ export default {
   data() {
     return {
       myposts: [],
-      likeUrl: "../../assets/new_facebook_like_640.png",
     };
   },
   methods: {
@@ -39,6 +39,10 @@ export default {
       localStorage.setItem("postId", id);
       this.$router.replace("/edit-post");
       console.log(id);
+    },
+    showDetails(id) {
+      localStorage.setItem("postId", id);
+      this.$router.replace("/post-details");
     },
   },
   computed: {

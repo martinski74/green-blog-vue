@@ -164,10 +164,14 @@ export default createStore({
       // commit("DELETE_POSTS", id);
     },
     async getPostById({ commit }, id) {
-      const res = await fetch("http://localhost:3000/posts/" + id);
-      const data = await res.json();
-      commit("GET_POST", data);
-      return res;
+      try {
+        const res = await fetch("http://localhost:3000/posts/" + id);
+        const data = await res.json();
+        commit("GET_POST", data);
+        return res;
+      } catch (error) {
+        throw new Error(error);
+      }
     },
     async updatePost({ commit }, data) {
       const res = fetch("http://localhost:3000/posts/" + data.id, {

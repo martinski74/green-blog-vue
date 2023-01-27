@@ -17,18 +17,20 @@
     </button>
     <p>
       {{ post.body }}
-      <button @click="seeMore">See more...</button>
+      <button class="see-more" @click="seeMore">See more...</button>
     </p>
     <small class="font-weight-bold"
       >Author: {{ post.author }} - {{ post.date }}</small
     >
     <span
-      ><img src="../assets/new_facebook_like_640.png" width="60px" />{{
-        post.likeCounter
-      }}</span
+      ><img
+        class="like"
+        src="./../assets/like_button.jpg"
+        style="width: 55px"
+      />{{ post.likeCounter }}</span
     >
     <span class="ml-4"
-      >Add Comment <img src="../assets/comment.png" width="25px"
+      >Add Comment <img src="../assets/comment.png" style="width: 25px"
     /></span>
     <!-- <div *ngIf="comment" class="comments">
           <p *ngFor="let com of comment" class="small">{ com.body }</p>
@@ -47,9 +49,16 @@ export default {
       type: Boolean,
       requred: true,
     },
+    likeImg: {
+      type: String,
+      requred: false,
+    },
   },
 
   methods: {
+    seeMore() {
+      this.$emit("seeMore", this.post.id);
+    },
     // limitText(value, stringLimit) {
     //   if (value.length > stringLimit) {
     //     value = value.substring(0, stringLimit) + "...";
@@ -77,5 +86,13 @@ span:hover {
   border: 1px solid gray;
   background-color: azure;
   margin-left: 200px;
+}
+.see-more {
+  border: none;
+  background-color: gold;
+  box-shadow: 2px 2px 4px #000000;
+}
+.like {
+  width: 50px;
 }
 </style>

@@ -12,7 +12,11 @@ export default createStore({
   },
   getters: {
     getUserName(state) {
-      return state.email;
+      if (state.token) {
+        return state.email;
+      } else {
+        return "Guest";
+      }
     },
     isAuthenticated(state) {
       return !!state.token;

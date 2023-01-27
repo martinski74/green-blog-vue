@@ -27,7 +27,6 @@ npm run serve
 yarn build
 
 ```
-### See ap here - green-blog-51a21.web.app
+### See ap here - [green-blog-51a21.web.app](https://green-blog-51a21.web.app)
 ```
 
-```

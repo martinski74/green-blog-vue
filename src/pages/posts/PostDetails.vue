@@ -30,6 +30,7 @@
           <i class="fa fa-chevron-left"></i> Back
         </router-link>
         <router-link
+          v-if="isLoged"
           to="/edit-post"
           class="btn btn-outline-primary"
           style="width: 80px"
@@ -49,6 +50,7 @@ export default {
   data() {
     return {
       errorMessage: "",
+      isLoged: "",
     };
   },
   methods: {
@@ -58,6 +60,7 @@ export default {
     ...mapState(["post"]),
   },
   async created() {
+    this.isLoged = localStorage.getItem("token");
     const id = localStorage.getItem("postId");
     try {
       await this.getPostById(id);

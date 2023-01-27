@@ -16,7 +16,7 @@
       Edit Post
     </button>
     <p>
-      {{ post.body }}
+      {{ limitText(post.body, 400) }}
       <button class="see-more" @click="seeMore">See more...</button>
     </p>
     <small class="font-weight-bold"
@@ -59,12 +59,12 @@ export default {
     seeMore() {
       this.$emit("seeMore", this.post.id);
     },
-    // limitText(value, stringLimit) {
-    //   if (value.length > stringLimit) {
-    //     value = value.substring(0, stringLimit) + "...";
-    //   }
-    //   return value;
-    // },
+    limitText(value, stringLimit) {
+      if (value.length > stringLimit) {
+        value = value.substring(0, stringLimit) + "...";
+      }
+      return value;
+    },
   },
 };
 </script>

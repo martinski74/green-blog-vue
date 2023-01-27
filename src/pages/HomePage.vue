@@ -27,13 +27,24 @@ export default {
   methods: {
     ...mapActions(["getPost", "deletePost"]),
     async removePost(id) {
-      await swal({
+      swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this post!",
         icon: "warning",
-        title: "Are sure you want delete this post?",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          this.deletePost(id);
+          this.myposts = this.myposts.filter((post) => post.id != id);
+          swal("Poof! Your post has been deleted!", {
+            icon: "success",
+          });
+        } else {
+          swal("Your post is safe!");
+          return;
+        }
       });
-      await this.deletePost(id);
-
-      this.myposts = this.myposts.filter((post) => post.id != id);
     },
     editPost(id) {
       localStorage.setItem("postId", id);

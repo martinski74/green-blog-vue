@@ -6,17 +6,13 @@ export default createStore({
     posts: [],
     post: null,
     // Auth
-    email: "",
+    email: null,
     userId: null,
     token: null,
   },
   getters: {
     getUserName(state) {
-      if (state.token) {
-        return state.email;
-      } else {
-        return "Guest";
-      }
+      return state.email;
     },
     isAuthenticated(state) {
       return !!state.token;
@@ -39,6 +35,7 @@ export default createStore({
       localStorage.removeItem("token");
       localStorage.removeItem("userId");
       localStorage.removeItem("tokenExpiration");
+      localStorage.removeItem("username");
 
       clearTimeout(timer);
 
@@ -73,6 +70,7 @@ export default createStore({
       localStorage.setItem("token", data.idToken);
       localStorage.setItem("userId", data.localId);
       localStorage.setItem("tokenExpiration", expirationDate);
+      localStorage.setItem("username", data.email);
 
       timer = setTimeout(() => {
         dispatch("logout");
@@ -89,6 +87,7 @@ export default createStore({
 
     tryLogin({ commit, dispatch }) {
       const token = localStorage.getItem("token");
+      const email = localStorage.getItem("username");
       const userId = localStorage.getItem("userId");
       const tokenExpiration = localStorage.getItem("tokenExpiration");
       const expiresIn = +tokenExpiration - new Date().getTime();
@@ -101,10 +100,11 @@ export default createStore({
         dispatch("logout");
       }, expiresIn);
 
-      if (token && userId) {
+      if (token && userId && email) {
         commit("REGISTER_USER", {
           token: token,
           userId: userId,
+          email: email,
           tokenExpirationL: null,
         });
       }

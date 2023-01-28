@@ -54,11 +54,8 @@
 import { mapGetters, mapActions } from "vuex";
 import swal from "sweetalert";
 export default {
-  data() {
-    return {};
-  },
   computed: {
-    ...mapGetters(["getUserName", "isAuthenticated"]),
+    ...mapGetters(["isAuthenticated", "getUserName"]),
   },
   methods: {
     ...mapActions(["logout"]),

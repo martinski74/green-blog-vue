@@ -1,20 +1,20 @@
 <template>
   <div class="col-10">
     <h2>{{ post.title }}</h2>
-    <button
+    <BaseButton
+      label="Delete"
+      color="btn-danger"
       v-if="isLoged"
-      class="btn btn-danger float-right"
       @click="$emit('onDelete', post.id)"
     >
-      Delete
-    </button>
-    <button
+    </BaseButton>
+    <BaseButton
+      label="Edit Post"
+      color="btn-info"
       v-if="isLoged"
-      class="btn btn-info float-right"
       @click="$emit('onEdit', post.id)"
     >
-      Edit Post
-    </button>
+    </BaseButton>
     <p>
       {{ limitText(post.body, 400) }}
       <button class="see-more" @click="seeMore">See more...</button>
@@ -39,7 +39,11 @@
 </template>
 
 <script>
+import BaseButton from "./UI/BaseButton.vue";
 export default {
+  components: {
+    BaseButton,
+  },
   props: {
     post: {
       type: Object,

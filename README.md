@@ -26,7 +26,4 @@ npm run serve
 
 yarn build
 
-```
-
-```
 

@@ -26,4 +26,7 @@ npm run serve
 
 yarn build
 
+```
+### App demo - https://green-blog-51a21.firebaseapp.com/
+
 

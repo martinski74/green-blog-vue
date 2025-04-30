@@ -24,7 +24,10 @@ npm run serve
 
 ```
 
-yarn build
-
+npm run build
 
 ```
+
+### App Demo
+
+https://green-blog-51a21.web.app/

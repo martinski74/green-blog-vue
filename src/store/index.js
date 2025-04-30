@@ -1,6 +1,8 @@
-import { createStore } from "vuex";
+import { createStore } from 'vuex';
 
 let timer;
+let APP_URL = 'http://localhost:8080/posts';
+
 export default createStore({
   state: {
     posts: [],
@@ -28,29 +30,32 @@ export default createStore({
       (state.userId = payload.userId),
       (state.email = payload.email)
     ),
+    DELETE_POST: (state, id) => {
+      state.posts = state.posts.filter((post) => post._id !== id);
+    },
   },
   actions: {
     // Authentication
     logout({ commit }) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("userId");
-      localStorage.removeItem("tokenExpiration");
-      localStorage.removeItem("username");
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('tokenExpiration');
+      localStorage.removeItem('username');
 
       clearTimeout(timer);
 
-      commit("REGISTER_USER", {
+      commit('REGISTER_USER', {
         token: null,
-        email: "",
+        email: '',
         userId: null,
       });
     },
 
     async login({ commit, dispatch }, payload) {
       const res = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyC-SY4FeeAuSrAWJKN9KU8Hk4iRSaseJAg",
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyC-SY4FeeAuSrAWJKN9KU8Hk4iRSaseJAg',
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify({
             email: payload.email,
             password: payload.password,
@@ -61,23 +66,23 @@ export default createStore({
       const data = await res.json();
 
       if (!res.ok) {
-        const error = new Error(data.error.message || "Failed authentication!");
+        const error = new Error(data.error.message || 'Failed authentication!');
         throw error;
       }
       const expireIn = +data.expiresIn * 1000;
       const expirationDate = new Date().getTime() + expireIn;
 
-      localStorage.setItem("token", data.idToken);
-      localStorage.setItem("userId", data.localId);
-      localStorage.setItem("tokenExpiration", expirationDate);
-      localStorage.setItem("username", data.email);
+      localStorage.setItem('token', data.idToken);
+      localStorage.setItem('userId', data.localId);
+      localStorage.setItem('tokenExpiration', expirationDate);
+      localStorage.setItem('username', data.email);
 
       timer = setTimeout(() => {
-        dispatch("logout");
+        dispatch('logout');
       }, expireIn);
 
       console.log(data);
-      commit("REGISTER_USER", {
+      commit('REGISTER_USER', {
         token: data.idToken,
         userId: data.localId,
         email: data.email,
@@ -86,10 +91,10 @@ export default createStore({
     },
 
     tryLogin({ commit, dispatch }) {
-      const token = localStorage.getItem("token");
-      const email = localStorage.getItem("username");
-      const userId = localStorage.getItem("userId");
-      const tokenExpiration = localStorage.getItem("tokenExpiration");
+      const token = localStorage.getItem('token');
+      const email = localStorage.getItem('username');
+      const userId = localStorage.getItem('userId');
+      const tokenExpiration = localStorage.getItem('tokenExpiration');
       const expiresIn = +tokenExpiration - new Date().getTime();
 
       if (expiresIn < 0) {
@@ -97,11 +102,11 @@ export default createStore({
       }
 
       timer = setTimeout(() => {
-        dispatch("logout");
+        dispatch('logout');
       }, expiresIn);
 
       if (token && userId && email) {
-        commit("REGISTER_USER", {
+        commit('REGISTER_USER', {
           token: token,
           userId: userId,
           email: email,
@@ -111,9 +116,9 @@ export default createStore({
     },
     async register({ commit }, payload) {
       const res = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC-SY4FeeAuSrAWJKN9KU8Hk4iRSaseJAg",
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC-SY4FeeAuSrAWJKN9KU8Hk4iRSaseJAg',
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify({
             email: payload.email,
             password: payload.password,
@@ -124,13 +129,13 @@ export default createStore({
       const data = await res.json();
       if (!res.ok) {
         const error = await new Error(
-          data.error.message || "Failed authentication!"
+          data.error.message || 'Failed authentication!'
         );
-        console.log("asaa ", data);
+        console.log('asaa ', data);
         throw error;
       }
       console.log(data);
-      commit("REGISTER_USER", {
+      commit('REGISTER_USER', {
         token: data.idToken,
         userId: data.localId,
         tokenExpiration: data.expiresIn,
@@ -138,54 +143,54 @@ export default createStore({
       return res;
     },
     async getPost({ commit }) {
-      const response = await fetch("http://localhost:3000/posts");
+      const response = await fetch(APP_URL);
       const data = await response.json();
-      commit("GET_POSTS", data);
+
+      commit('GET_POSTS', data);
       return response;
     },
     async createPost({ commit }, post) {
-      const res = await fetch("http://localhost:3000/posts", {
+      const res = await fetch(APP_URL, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(post),
       });
       const data = await res.json();
       console.log(data);
-      commit("CREATE_POST", post);
+      commit('CREATE_POST', post);
       return res;
     },
-    async deletePost(_, id) {
-      const res = await fetch("http://localhost:3000/posts/" + id, {
+    async deletePost({ commit }, id) {
+      const res = await fetch(`${APP_URL}/delete/${id}`, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        method: "DELETE",
+        method: 'DELETE',
       });
 
-      console.log("res", res);
-      // commit("DELETE_POSTS", id);
+      commit('DELETE_POST', id);
     },
     async getPostById({ commit }, id) {
       try {
-        const res = await fetch("http://localhost:3000/posts/" + id);
+        const res = await fetch(`${APP_URL}/details/${id}`);
         const data = await res.json();
-        commit("GET_POST", data);
+        commit('GET_POST', data);
         return res;
       } catch (error) {
         throw new Error(error);
       }
     },
     async updatePost({ commit }, data) {
-      const res = fetch("http://localhost:3000/posts/" + data.id, {
-        method: "PUT",
+      const res = fetch(`${APP_URL}/details/${data.id}`, {
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       });
-      commit("UPDATE_POST", data);
+      commit('UPDATE_POST', data);
       return res;
     },
   },

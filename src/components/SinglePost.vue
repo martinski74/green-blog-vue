@@ -5,14 +5,14 @@
       label="Delete"
       color="btn-danger"
       v-if="isLoged"
-      @click="$emit('onDelete', post.id)"
+      @click="$emit('onDelete', post._id)"
     >
     </BaseButton>
     <BaseButton
       label="Edit Post"
       color="btn-info"
       v-if="isLoged"
-      @click="$emit('onEdit', post.id)"
+      @click="$emit('onEdit', post._id)"
     >
     </BaseButton>
     <p>
@@ -32,14 +32,11 @@
     <span class="ml-4"
       >Add Comment <img src="../assets/comment.png" style="width: 25px"
     /></span>
-    <!-- <div *ngIf="comment" class="comments">
-          <p *ngFor="let com of comment" class="small">{ com.body }</p>
-        </div> -->
   </div>
 </template>
 
 <script>
-import BaseButton from "./UI/BaseButton.vue";
+import BaseButton from './UI/BaseButton.vue';
 export default {
   components: {
     BaseButton,
@@ -61,11 +58,11 @@ export default {
 
   methods: {
     seeMore() {
-      this.$emit("seeMore", this.post.id);
+      this.$emit('seeMore', this.post._id);
     },
     limitText(value, stringLimit) {
       if (value.length > stringLimit) {
-        value = value.substring(0, stringLimit) + "...";
+        value = value.substring(0, stringLimit) + '...';
       }
       return value;
     },
@@ -93,7 +90,7 @@ span:hover {
 }
 .see-more {
   border: none;
-  background-color: gold;
+  background-color: #80bdff;
   box-shadow: 2px 2px 4px #000000;
 }
 .like {

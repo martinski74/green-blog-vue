@@ -1,11 +1,11 @@
 <template>
   <div v-if="posts" class="container">
-    <div class="row mb-4" v-for="post in myposts" :key="post.id">
+    <div class="row mb-4" v-for="post in posts" :key="post._id">
       <SinglePost
         :post="post"
         :isLoged="isAuthenticated"
-        @onDelete="removePost(post.id)"
-        @onEdit="editPost(post.id)"
+        @onDelete="removePost(post._id)"
+        @onEdit="editPost(post._id)"
         @seeMore="showDetails"
       />
     </div>
@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from "vuex";
-import SinglePost from "./../components/SinglePost.vue";
-import swal from "sweetalert";
+import { mapActions, mapState, mapGetters } from 'vuex';
+import SinglePost from './../components/SinglePost.vue';
+import swal from 'sweetalert';
 
 export default {
   components: { SinglePost },
@@ -25,40 +25,40 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getPost", "deletePost"]),
+    ...mapActions(['getPost', 'deletePost']),
     async removePost(id) {
       swal({
-        title: "Are you sure?",
-        text: "Once deleted, you will not be able to recover this post!",
-        icon: "warning",
+        title: 'Are you sure?',
+        text: 'Once deleted, you will not be able to recover this post!',
+        icon: 'warning',
         buttons: true,
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
           this.deletePost(id);
           this.myposts = this.myposts.filter((post) => post.id != id);
-          swal("Poof! Your post has been deleted!", {
-            icon: "success",
+          swal('Poof! Your post has been deleted!', {
+            icon: 'success',
           });
         } else {
-          swal("Your post is safe!");
+          swal('Your post is safe!');
           return;
         }
       });
     },
     editPost(id) {
-      localStorage.setItem("postId", id);
-      this.$router.replace("/edit-post");
+      localStorage.setItem('postId', id);
+      this.$router.replace('/edit-post');
       console.log(id);
     },
     showDetails(id) {
-      localStorage.setItem("postId", id);
-      this.$router.replace("/post-details");
+      localStorage.setItem('postId', id);
+      this.$router.replace('/post-details');
     },
   },
   computed: {
-    ...mapState(["posts", "post"]),
-    ...mapGetters(["isAuthenticated"]),
+    ...mapState(['posts', 'post']),
+    ...mapGetters(['isAuthenticated']),
   },
 
   async mounted() {

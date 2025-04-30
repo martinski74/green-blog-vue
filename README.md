@@ -6,13 +6,6 @@
 npm install
 ```
 
-## Start server
-
-```
-npm run db
-
-```
-
 ### Start project
 
 ```

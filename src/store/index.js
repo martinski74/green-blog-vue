@@ -2,6 +2,8 @@ import { createStore } from 'vuex';
 
 let timer;
 let APP_URL = process.env.VUE_APP_URL;
+let USER_LOGIN = process.env.VUE_APP_USER_LOGIN;
+let USER_SIGNUP = process.env.VUE_APP_USER_SIGNUP;
 
 export default createStore({
   state: {
@@ -52,17 +54,14 @@ export default createStore({
     },
 
     async login({ commit, dispatch }, payload) {
-      const res = await fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyC-SY4FeeAuSrAWJKN9KU8Hk4iRSaseJAg',
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            email: payload.email,
-            password: payload.password,
-            returnSecureToken: true,
-          }),
-        }
-      );
+      const res = await fetch(USER_LOGIN, {
+        method: 'POST',
+        body: JSON.stringify({
+          email: payload.email,
+          password: payload.password,
+          returnSecureToken: true,
+        }),
+      });
       const data = await res.json();
 
       if (!res.ok) {
@@ -115,17 +114,14 @@ export default createStore({
       }
     },
     async register({ commit }, payload) {
-      const res = await fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC-SY4FeeAuSrAWJKN9KU8Hk4iRSaseJAg',
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            email: payload.email,
-            password: payload.password,
-            returnSecureToken: true,
-          }),
-        }
-      );
+      const res = await fetch(USER_SIGNUP, {
+        method: 'POST',
+        body: JSON.stringify({
+          email: payload.email,
+          password: payload.password,
+          returnSecureToken: true,
+        }),
+      });
       const data = await res.json();
       if (!res.ok) {
         const error = await new Error(

@@ -1,7 +1,7 @@
 import { createStore } from 'vuex';
 
 let timer;
-let APP_URL = 'http://localhost:8080/posts';
+let APP_URL = process.env.VUE_APP_URL;
 
 export default createStore({
   state: {

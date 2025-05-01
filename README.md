@@ -1,5 +1,5 @@
 # green-blog-vue
-### This is my first educational project at SoftUni.
+### This is my first educational project at SoftUni.:)
 
 ## Project setup
 

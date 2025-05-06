@@ -3,8 +3,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
     compress: true,
-    disableHostCheck: true,
-    host: '0.0.0.0',
+    allowedHosts: ['http://green-blog.up.railway.app'],
     port: 3000,
   },
 });

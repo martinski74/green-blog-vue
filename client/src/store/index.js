@@ -139,7 +139,7 @@ export default createStore({
       return res;
     },
     async getPost({ commit }) {
-      const response = await fetch(APP_URL);
+      const response = await fetch(APP_URL, {referrerPolicy: "unsafe-url"});
       const data = await response.json();
 
       commit('GET_POSTS', data);

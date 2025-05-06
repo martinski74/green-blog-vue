@@ -23,4 +23,4 @@ npm run build
 
 ### App Demo
 
-https://green-blog-51a21.web.app/
+https://green-blog-vue.netlify.app/

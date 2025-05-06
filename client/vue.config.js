@@ -3,7 +3,8 @@ module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
     compress: true,
-    port: process.env.PORT,
-    allowedHosts: 'all',
+    disableHostCheck: true,
+    host: '0.0.0.0',
+    port: 3000,
   },
 });

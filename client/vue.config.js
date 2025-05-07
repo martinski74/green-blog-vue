@@ -4,7 +4,7 @@ module.exports = defineConfig({
   devServer: {
     compress: true,
     disableHostCheck: true,
-    allowedHosts: ['http://green-blog.up.railway.app'],
+    allowedHosts: ['green-blog.up.railway.app'],
     port: 3000,
   },
 });

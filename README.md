@@ -3,6 +3,6 @@
 
 ### This is my first educational project at SoftUni. :)
 
-### App Demo
+
 
 

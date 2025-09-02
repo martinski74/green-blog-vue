@@ -5,6 +5,6 @@ module.exports = defineConfig({
     compress: true,
     // disableHostCheck: true,
     allowedHosts: ['green-blog.up.railway.app'],
-    port: 3000,
+    port: 3030,
   },
 });

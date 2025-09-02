@@ -44,8 +44,9 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
-import swal from "sweetalert";
+import { mapActions, mapState } from 'vuex';
+import swal from 'sweetalert';
+
 export default {
   data() {
     return {
@@ -53,9 +54,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getPostById", "updatePost"]),
+    ...mapActions(['getPostById', 'updatePost']),
     async handleEdit() {
-      const id = localStorage.getItem("postId");
+      const id = localStorage.getItem('postId');
       const formData = {
         id: id,
         title: this.mypost.title,
@@ -63,23 +64,24 @@ export default {
         author: this.mypost.author,
       };
       if (!formData) {
-        throw new Error("Something went wrong!");
+        throw new Error('Something went wrong!');
       }
       await this.updatePost(formData);
-      localStorage.removeItem("postId");
-      swal("Good job!", "Successfully edited!", "success");
-      this.$router.push("/home");
+      localStorage.removeItem('postId');
+      swal('Good job!', 'Successfully edited!', 'success');
+      this.$router.push('/home');
     },
   },
   computed: {
-    ...mapState(["post"]),
+    ...mapState(['post']),
   },
 
   async created() {
-    const id = localStorage.getItem("postId");
+    const id = localStorage.getItem('postId');
+    debugger;
     await this.getPostById(id);
     this.mypost = this.post;
-    console.log(this.mypost);
+    console.log(id);
   },
 };
 </script>

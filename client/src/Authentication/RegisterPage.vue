@@ -47,36 +47,33 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
-import swal from "sweetalert";
+import { mapActions } from 'vuex';
+import swal from 'sweetalert';
 export default {
   data() {
     return {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       isFormValid: true,
-      errorMessage: "",
+      errorMessage: '',
     };
   },
   methods: {
-    ...mapActions(["register"]),
+    ...mapActions(['register']),
     async handleSubmit() {
       this.isFormValid = true;
-      if (this.email == "" || !this.email.includes("@") || this.password < 6) {
+      if (this.email == '' || !this.email.includes('@') || this.password < 6) {
         this.isFormValid = false;
         return;
       }
       try {
-        await this.register({
-          email: this.email,
-          password: this.password,
-        });
+        await this.register({ email: this.email, password: this.password });
         swal({
-          icon: "success",
-          title: "You are registered!",
+          icon: 'success',
+          title: 'You are registered!',
         });
         setTimeout(() => {
-          this.$router.replace("/login");
+          this.$router.replace('/login');
         }, 1500);
       } catch (error) {
         this.errorMessage = error;

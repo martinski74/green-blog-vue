@@ -1,46 +1,46 @@
-import { createRouter, createWebHistory } from "vue-router";
-import HomePage from "./../pages/HomePage.vue";
-import LoginPage from "./../Authentication/LoginPage.vue";
-import RegisterPage from "./../Authentication/RegisterPage.vue";
-import CreatePost from "./../pages/posts/CraetePost.vue";
-import EditPost from "./../pages/posts/EditPost.vue";
-import PostDetails from "./../pages/posts/PostDetails.vue";
+import { createRouter, createWebHistory } from 'vue-router';
+import HomePage from './../pages/HomePage.vue';
+import LoginPage from './../Authentication/LoginPage.vue';
+import RegisterPage from './../Authentication/RegisterPage.vue';
+import CreatePost from './../pages/posts/CraetePost.vue';
+import EditPost from './../pages/posts/EditPost.vue';
+import PostDetails from './../pages/posts/PostDetails.vue';
 
 const routes = [
   {
-    path: "/",
-    redirect: "/home",
+    path: '/',
+    redirect: '/home',
   },
   {
-    path: "/home",
-    name: "home",
+    path: '/home',
+    name: 'home',
     component: HomePage,
   },
   {
-    path: "/login",
-    name: "login",
+    path: '/login',
+    name: 'login',
     component: LoginPage,
   },
   {
-    path: "/register",
-    name: "register",
+    path: '/register',
+    name: 'register',
     component: RegisterPage,
   },
   {
-    path: "/create-post",
-    name: "create-post",
-    meta: { requresAuth: true },
+    path: '/create-post',
+    name: 'create-post',
+    meta: { requiresAuth: true },
     component: CreatePost,
   },
   {
-    path: "/edit-post",
-    name: "edit-post",
-    meta: { requresAuth: true },
+    path: '/edit-post',
+    name: 'edit-post',
+    meta: { requiresAuth: true },
     component: EditPost,
   },
   {
-    path: "/post-details",
-    name: "post details",
+    path: '/post-details',
+    name: 'post details',
     component: PostDetails,
   },
 ];
@@ -49,7 +49,7 @@ const router = createRouter({
   routes,
 });
 // router.beforeEach((to, from, next) => {
-//   if (to.meta.requresAuth) {
+//   if (to.meta.requiresAuth) {
 //     next("/login");
 //   } else {
 //     next();

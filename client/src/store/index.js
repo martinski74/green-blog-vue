@@ -1,145 +1,75 @@
 import { createStore } from 'vuex';
-
-let timer;
-let APP_URL = process.env.VUE_APP_URL;
-let USER_LOGIN = process.env.VUE_APP_USER_LOGIN;
-let USER_SIGNUP = process.env.VUE_APP_USER_SIGNUP;
+import { auth } from '../firebase/config';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth';
+const APP_URL = process.env.VUE_APP_URL;
 
 export default createStore({
   state: {
     posts: [],
     post: null,
     // Auth
-    email: null,
-    userId: null,
-    token: null,
+    user: null,
   },
   getters: {
     getUserName(state) {
-      return state.email;
+      return state?.user?.email;
     },
     isAuthenticated(state) {
-      return !!state.token;
+      return !!state.user;
     },
   },
   mutations: {
+    SET_USER(state, user) {
+      state.user = user;
+    },
+    CLEAR_USER(state) {
+      state.user = null;
+    },
     GET_POSTS: (state, posts) => (state.posts = posts),
     CREATE_POST: (state, post) => state.posts.unshift(post),
     GET_POST: (state, post) => (state.post = post),
     UPDATE_POST: (state, post) => (state.post = post),
-    REGISTER_USER: (state, payload) => (
-      (state.token = payload.token),
-      (state.userId = payload.userId),
-      (state.email = payload.email)
-    ),
     DELETE_POST: (state, id) => {
-      state.posts = state.posts.filter((post) => post._id !== id);
+      state.posts = state.posts.filter((post) => post.id !== id);
     },
   },
   actions: {
     // Authentication
     logout({ commit }) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('tokenExpiration');
-      localStorage.removeItem('username');
-
-      clearTimeout(timer);
-
-      commit('REGISTER_USER', {
-        token: null,
-        email: '',
-        userId: null,
-      });
+      signOut(auth);
+      commit('CLEAR_USER');
     },
 
-    async login({ commit, dispatch }, payload) {
-      const res = await fetch(USER_LOGIN, {
-        method: 'POST',
-        body: JSON.stringify({
-          email: payload.email,
-          password: payload.password,
-          returnSecureToken: true,
-        }),
-      });
-      const data = await res.json();
+    async login({ commit }, payload) {
+      const { email, password } = payload;
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log(userCredentials.user.email);
 
-      if (!res.ok) {
-        const error = new Error(data.error.message || 'Failed authentication!');
-        throw error;
-      }
-      const expireIn = +data.expiresIn * 1000;
-      const expirationDate = new Date().getTime() + expireIn;
-
-      localStorage.setItem('token', data.idToken);
-      localStorage.setItem('userId', data.localId);
-      localStorage.setItem('tokenExpiration', expirationDate);
-      localStorage.setItem('username', data.email);
-
-      timer = setTimeout(() => {
-        dispatch('logout');
-      }, expireIn);
-
-      console.log(data);
-      commit('REGISTER_USER', {
-        token: data.idToken,
-        userId: data.localId,
-        email: data.email,
-      });
-      return res;
+      commit('SET_USER', userCredentials.user);
     },
 
-    tryLogin({ commit, dispatch }) {
-      const token = localStorage.getItem('token');
-      const email = localStorage.getItem('username');
-      const userId = localStorage.getItem('userId');
-      const tokenExpiration = localStorage.getItem('tokenExpiration');
-      const expiresIn = +tokenExpiration - new Date().getTime();
-
-      if (expiresIn < 0) {
-        return;
-      }
-
-      timer = setTimeout(() => {
-        dispatch('logout');
-      }, expiresIn);
-
-      if (token && userId && email) {
-        commit('REGISTER_USER', {
-          token: token,
-          userId: userId,
-          email: email,
-          tokenExpirationL: null,
-        });
-      }
-    },
     async register({ commit }, payload) {
-      const res = await fetch(USER_SIGNUP, {
-        method: 'POST',
-        body: JSON.stringify({
-          email: payload.email,
-          password: payload.password,
-          returnSecureToken: true,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        const error = await new Error(
-          data.error.message || 'Failed authentication!'
-        );
-        console.log('asaa ', data);
-        throw error;
-      }
-      console.log(data);
-      commit('REGISTER_USER', {
-        token: data.idToken,
-        userId: data.localId,
-        tokenExpiration: data.expiresIn,
-      });
-      return res;
+      const { email, password } = payload;
+
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      commit('SET_USER', userCredentials.user);
     },
+
     async getPost({ commit }) {
-      const response = await fetch(APP_URL, { referrerPolicy: 'unsafe-url' });
+      const response = await fetch(APP_URL);
       const data = await response.json();
 
       commit('GET_POSTS', data);
@@ -159,7 +89,7 @@ export default createStore({
       return res;
     },
     async deletePost({ commit }, id) {
-      const res = await fetch(`${APP_URL}/delete/${id}`, {
+      const res = await fetch(`${APP_URL}/${id}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -170,7 +100,7 @@ export default createStore({
     },
     async getPostById({ commit }, id) {
       try {
-        const res = await fetch(`${APP_URL}/details/${id}`);
+        const res = await fetch(`${APP_URL}/${id}`);
         const data = await res.json();
         commit('GET_POST', data);
         return res;

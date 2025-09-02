@@ -1,11 +1,11 @@
 <template>
   <div v-if="posts" class="container">
-    <div class="row mb-4" v-for="post in posts" :key="post._id">
+    <div class="row mb-4" v-for="post in posts" :key="post.id">
       <SinglePost
         :post="post"
         :isLoged="isAuthenticated"
-        @onDelete="removePost(post._id)"
-        @onEdit="editPost(post._id)"
+        @onDelete="removePost(post.id)"
+        @onEdit="editPost(post.id)"
         @seeMore="showDetails"
       />
     </div>
@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     ...mapActions(['getPost', 'deletePost']),
-    async removePost(id) {
+    removePost(id) {
       swal({
         title: 'Are you sure?',
         text: 'Once deleted, you will not be able to recover this post!',
@@ -37,6 +37,7 @@ export default {
         if (willDelete) {
           this.deletePost(id);
           this.myposts = this.myposts.filter((post) => post.id != id);
+
           swal('Poof! Your post has been deleted!', {
             icon: 'success',
           });

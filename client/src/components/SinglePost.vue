@@ -5,14 +5,14 @@
       label="Delete"
       color="btn-danger"
       v-if="isLoged"
-      @click="$emit('onDelete', post._id)"
+      @click="$emit('onDelete', post.id)"
     >
     </BaseButton>
     <BaseButton
       label="Edit Post"
       color="btn-info"
       v-if="isLoged"
-      @click="$emit('onEdit', post._id)"
+      @click="$emit('onEdit', post.id)"
     >
     </BaseButton>
     <p>
@@ -58,7 +58,7 @@ export default {
 
   methods: {
     seeMore() {
-      this.$emit('seeMore', this.post._id);
+      this.$emit('seeMore', this.post.id);
     },
     limitText(value, stringLimit) {
       if (value.length > stringLimit) {

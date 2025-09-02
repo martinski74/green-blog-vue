@@ -39,41 +39,38 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import swal from "sweetalert";
+import { mapActions } from 'vuex';
+import swal from 'sweetalert';
 export default {
-  name: "LoginPage",
+  name: 'LoginPage',
   data() {
     return {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       isFormValid: true,
-      errorMessage: "",
+      errorMessage: '',
     };
   },
   methods: {
-    ...mapActions(["login"]),
+    ...mapActions(['login']),
     async hendleSubmit() {
       try {
         this.isFormValid = true;
         if (
-          this.email == "" ||
-          !this.email.includes("@") ||
+          this.email == '' ||
+          !this.email.includes('@') ||
           this.password < 6
         ) {
           this.isFormValid = false;
           return;
         }
-        await this.login({
-          email: this.email,
-          password: this.password,
-        });
+        await this.login({ email: this.email, password: this.password });
         swal({
-          icon: "success",
-          title: "You are Loged In!!",
+          icon: 'success',
+          title: 'You are Loged In!!',
         });
         setTimeout(() => {
-          this.$router.replace("/home");
+          this.$router.replace('/home');
         }, 1000);
       } catch (error) {
         this.errorMessage = error;

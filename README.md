@@ -1,7 +1,26 @@
 # green-blog-vue
 
-### front-end -> Vue.js;
+## Project setup
 
-### back-end -> json-server
+```
+npm install
+```
 
-### This is my first educational project at SoftUni. :)
+### Start project
+
+```
+npm run serve
+
+```
+
+### Compiles and minifies for production
+
+```
+
+npm run build
+
+```
+
+### App Demo
+
+https://green-blog-vue.netlify.app/

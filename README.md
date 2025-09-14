@@ -9,7 +9,7 @@ npm install
 ### Start project
 
 ```
-npm run serve
+npm run start
 
 ```
 

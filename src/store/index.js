@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
-const APP_URL = process.env.VUE_APP_URL;
+const APP_URL = 'http://localhost:3001/posts';
 
 export default createStore({
   state: {

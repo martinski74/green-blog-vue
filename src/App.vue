@@ -15,12 +15,8 @@ export default {
   components: {
     NavBar,
   },
-  methods: {
-    ...mapActions(["tryLogin"]),
-  },
-  created() {
-    this.tryLogin();
-  },
+
+  
 };
 </script>
 
